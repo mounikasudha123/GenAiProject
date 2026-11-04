@@ -1,0 +1,58 @@
+.auth-page{min-height:100vh;display:grid;grid-template-columns:minmax(0,1.04fr) minmax(430px,.96fr);background:#f8f8f3;color:#29332b}
+.auth-story{min-height:100vh;padding:38px clamp(28px,6vw,88px) 25px;background:#edf1e9;display:flex;flex-direction:column}
+.auth-brand{display:inline-flex;align-items:center;gap:10px;width:max-content;font:800 21px 'Manrope',sans-serif;color:#344136}
+.auth-brand-mark{width:34px;height:34px;border-radius:10px;background:#dce7d7;color:#59745b;display:grid;place-items:center}
+.auth-story-copy{max-width:510px;margin:clamp(42px,8vh,92px) 0 25px}
+.auth-kicker{display:block;color:#75826e;font-size:10px;font-weight:700;letter-spacing:1.35px}
+.auth-story-copy h1{max-width:480px;margin:12px 0 10px;font:700 38px/1.16 'Manrope',sans-serif;color:#354238}
+.auth-story-copy p{max-width:395px;margin:0;color:#778074;font-size:14px;line-height:1.7}
+.auth-landscape{position:relative;max-width:550px;width:100%;margin:auto 0 18px;overflow:hidden;border-radius:8px;background:#d9e2d4;aspect-ratio:1.8}
+.auth-landscape img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 52%}
+.auth-landscape figcaption{position:absolute;left:14px;bottom:13px;display:flex;align-items:center;gap:7px;padding:8px 11px;border-radius:5px;background:rgba(251,252,248,.92);color:#51634f;font-size:11px}
+.auth-story-foot{display:flex;align-items:center;gap:7px;color:#7f887c;font-size:11px}
+.auth-panel{min-height:100vh;padding:46px clamp(27px,6vw,84px) 20px;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.auth-panel-inner{width:min(100%,390px);margin:auto 0}
+.auth-panel-heading{margin-bottom:28px}
+.auth-panel-heading h2{margin:8px 0 6px;font:700 27px/1.2 'Manrope',sans-serif;color:#344136}
+.auth-panel-heading p{margin:0;color:#81887c;font-size:12px;line-height:1.6}
+.auth-form{display:grid;gap:16px}
+.auth-field{display:grid;gap:7px;color:#536052;font-size:11px;font-weight:600}
+.auth-field input{width:100%;height:43px;padding:0 12px;border:1px solid #dfe4dc;border-radius:5px;background:#fff;color:#344136;font-size:12px;outline:none;transition:border-color .15s,box-shadow .15s}
+.auth-field input:focus{border-color:#829980;box-shadow:0 0 0 3px rgba(130,153,128,.15)}
+.auth-field input::placeholder{color:#adb3aa}
+.auth-label-row{display:flex;align-items:center;justify-content:space-between}
+.auth-label-row a,.auth-switch-copy a{color:#547254;font-weight:700;text-decoration:none}
+.auth-label-row a:hover,.auth-switch-copy a:hover{text-decoration:underline}
+.auth-password-wrap{position:relative;display:block}
+.auth-password-wrap input{padding-right:44px}
+.auth-password-toggle{position:absolute;top:0;right:3px;width:38px;height:43px;display:grid;place-items:center;border:0;background:transparent;color:#818a7d;cursor:pointer}
+.auth-check{display:flex;align-items:flex-start;gap:9px;color:#71796f;font-size:11px;line-height:1.5;cursor:pointer}
+.auth-check input{width:15px;height:15px;margin:0;accent-color:#657f65;flex:none}
+.auth-terms{margin:0 0 1px}
+.auth-submit{min-height:44px;border:0;border-radius:5px;background:#58745b;color:#fff;font-size:12px;font-weight:700;cursor:pointer;transition:background .15s,transform .15s}
+.auth-submit:hover:not(:disabled){background:#49664d;transform:translateY(-1px)}
+.auth-submit:disabled,.auth-google:disabled{opacity:.55;cursor:not-allowed}
+.auth-google{height:42px;display:flex;align-items:center;justify-content:center;gap:9px;border:1px solid #dfe4dc;border-radius:5px;background:#fff;color:#515b51;font-size:11px;font-weight:600;cursor:pointer}
+.auth-google:hover:not(:disabled){background:#f6f7f3}
+.google-mark{font:700 15px Arial,sans-serif;color:#5477d1}
+.auth-divider{display:flex;align-items:center;gap:11px;color:#9aa096;font-size:10px}
+.auth-divider::before,.auth-divider::after{content:"";height:1px;flex:1;background:#e4e7e0}
+.auth-switch-copy{margin:5px 0 0;text-align:center;color:#81887c;font-size:11px}
+.auth-switch-copy a{margin-left:3px}
+.auth-error,.auth-success{padding:10px 12px;border:1px solid #ead3ce;border-radius:5px;background:#fbf1ee;color:#8f574d;font-size:11px;line-height:1.5}
+.auth-success{border-color:#d6e3d3;background:#f0f5ed;color:#526c50}
+.auth-error code{font-size:10px}
+.password-strength{display:flex;align-items:center;gap:9px;color:#899185;font-size:10px;font-weight:400}
+.strength-track{display:flex;gap:4px;flex:1}
+.strength-track>span{height:4px;flex:1;border-radius:2px;background:#e7eae4}
+.strength-track>span.strength-1{background:#d58e76}
+.strength-track>span.strength-2{background:#d9bd7d}
+.strength-track>span.strength-3{background:#9cad80}
+.strength-track>span.strength-4{background:#5f805f}
+.auth-footer{width:min(100%,390px);margin:28px auto 0;color:#9aa096;text-align:center;font-size:9px;line-height:1.5}
+.auth-loading{min-height:100vh;display:grid;place-content:center;justify-items:center;gap:13px;background:#f6f7f2;color:#697466;font-size:12px}
+.auth-loading-mark{width:28px;height:28px;border:2px solid #dce5d8;border-top-color:#638064;border-radius:50%;animation:auth-spin .8s linear infinite}
+@keyframes auth-spin{to{transform:rotate(360deg)}}
+@media(max-width:850px){.auth-page{grid-template-columns:minmax(0,.9fr) minmax(390px,1.1fr)}.auth-story{padding:30px 28px 20px}.auth-story-copy h1{font-size:32px}.auth-panel{padding:32px 28px}}
+@media(max-width:650px){.auth-page{display:flex;flex-direction:column}.auth-story{min-height:auto;padding:21px 22px 0}.auth-story-copy{margin:25px 0 16px}.auth-story-copy h1{max-width:420px;font-size:27px}.auth-story-copy p{font-size:12px}.auth-landscape{margin:0 0 13px;max-width:none;aspect-ratio:2.4}.auth-landscape figcaption{left:9px;bottom:8px;padding:6px 8px;font-size:9px}.auth-story-foot{display:none}.auth-panel{min-height:auto;padding:27px 22px 20px}.auth-panel-heading{margin-bottom:21px}.auth-panel-heading h2{font-size:24px}.auth-panel-inner,.auth-footer{width:min(100%,430px)}.auth-form{gap:14px}.auth-footer{margin:19px auto 0}}
+@media(max-width:360px){.auth-story{padding-inline:16px}.auth-panel{padding-inline:16px}.auth-story-copy h1{font-size:24px}}
