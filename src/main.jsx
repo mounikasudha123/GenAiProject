@@ -11,7 +11,7 @@ import './styles.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <AuthProvider>
         <Routes>
           <Route path="/sign-in" element={<GuestRoute><SignIn /></GuestRoute>} />

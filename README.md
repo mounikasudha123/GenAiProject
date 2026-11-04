@@ -68,6 +68,10 @@ npm test          # API and safety tests
 
 Deploy the static frontend to Vercel or Firebase Hosting and deploy `server/` as a Node service (for example Render). Set `CLIENT_ORIGIN` to the exact HTTPS frontend origin and set `NODE_ENV=production` on the API. Configure Firebase web settings as frontend environment variables and Firebase Admin/LLM credentials only as backend secrets. Set the frontend's `VITE_API_URL` to the deployed API base path. Use HTTPS, restrictive Firebase rules, access-controlled provider credentials, and tested backup/deletion procedures.
 
+### GitHub Pages
+
+The repository includes `.github/workflows/pages.yml`. Enable Pages with **GitHub Actions** as the build source, add the four `VITE_FIREBASE_*` web config values as repository Actions secrets, and set `VITE_API_URL` as a repository variable to the deployed API URL. For optional Google auth, set `VITE_FIREBASE_GOOGLE_AUTH_ENABLED` as a variable after enabling Google in Firebase. Add `mounikasudha123.github.io` to Firebase Authentication's authorized domains. The workflow builds with the `/GenAiProject/` base path and includes an SPA fallback for route refreshes.
+
 ## Data and limitations
 
 - MindMate clears legacy journal, gratitude, and habit browser storage on sign-out. Firebase records are associated with the authenticated UID and protected by the included Firestore rules.
