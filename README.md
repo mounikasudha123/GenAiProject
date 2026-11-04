@@ -70,7 +70,7 @@ Deploy the static frontend to Vercel or Firebase Hosting and deploy `server/` as
 
 ### GitHub Pages
 
-The repository includes `.github/workflows/pages.yml`. Enable Pages with **GitHub Actions** as the build source, add the four `VITE_FIREBASE_*` web config values as repository Actions secrets, and set `VITE_API_URL` as a repository variable to the deployed API URL. For optional Google auth, set `VITE_FIREBASE_GOOGLE_AUTH_ENABLED` as a variable after enabling Google in Firebase. Add `mounikasudha123.github.io` to Firebase Authentication's authorized domains. The workflow builds with the `/GenAiProject/` base path and includes an SPA fallback for route refreshes.
+The repository includes `.github/workflows/static.yml`. Enable Pages with **GitHub Actions** as the build source, add the four `VITE_FIREBASE_*` web config values as repository Actions secrets, and set `VITE_API_URL` as a repository variable to the deployed API URL. For optional Google auth, set `VITE_FIREBASE_GOOGLE_AUTH_ENABLED` as a variable after enabling Google in Firebase. Add `mounikasudha123.github.io` to Firebase Authentication's authorized domains. The workflow builds with the `/GenAiProject/` base path and includes an SPA fallback for route refreshes.
 
 ## Data and limitations
 
