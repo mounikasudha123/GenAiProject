@@ -48,19 +48,22 @@ function clearSensitiveCache() {
 }
 
 async function ensureUserProfile(user, displayName = user.displayName || "") {
-  const profileRef = doc(db, "users", user.uid);
-  const profileSnapshot = await getDoc(profileRef);
-  await setDoc(
-    profileRef,
-    {
-      uid: user.uid,
-      displayName,
-      email: user.email || "",
-      updatedAt: serverTimestamp(),
-      ...(!profileSnapshot.exists() ? { createdAt: serverTimestamp() } : {}),
-    },
-    { merge: true },
-  );
+  if (!db || !user?.uid) return;
+  try {
+    const profileRef = doc(db, "users", user.uid);
+    await setDoc(
+      profileRef,
+      {
+        uid: user.uid,
+        displayName: displayName || user.displayName || user.email?.split("@")[0] || "User",
+        email: user.email || "",
+        updatedAt: serverTimestamp(),
+      },
+      { merge: true },
+    );
+  } catch (error) {
+    console.warn("Could not save user profile to Firestore (skipping):", error?.message);
+  }
 }
 
 export function AuthProvider({ children }) {
@@ -114,9 +117,14 @@ export function AuthProvider({ children }) {
   async function signInWithGoogle() {
     if (!firebaseGoogleEnabled)
       throw new Error("Google sign-in is not enabled for this app.");
-    await setPersistence(auth, browserLocalPersistence);
-    const credential = await signInWithPopup(auth, new GoogleAuthProvider());
-    await ensureUserProfile(credential.user);
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: "select_account" });
+    const credential = await signInWithPopup(auth, provider);
+    setUser(credential.user);
+    // Sync profile in background without blocking login
+    ensureUserProfile(credential.user).catch((err) => {
+      console.warn("Background profile sync skipped:", err);
+    });
     return credential.user;
   }
 
@@ -164,7 +172,9 @@ export function getAuthErrorMessage(error) {
     "auth/email-already-in-use": "An account already exists for that email.",
     "auth/weak-password": "Choose a stronger password with at least 6 characters.",
     "auth/popup-closed-by-user": "The Google sign-in window was closed before finishing.",
-    "auth/operation-not-allowed": "This sign-in method is not enabled in Firebase yet.",
+    "auth/popup-blocked": "The Google sign-in popup was blocked by your browser. Please allow popups for this site.",
+    "auth/operation-not-allowed": "Google sign-in is not enabled in your Firebase project yet. Go to Firebase Console > Authentication > Sign-in method, click Add new provider, and enable Google.",
+    "auth/unauthorized-domain": "This domain (localhost) is not authorized in Firebase Authentication. Add 'localhost' under Firebase Console > Authentication > Settings > Authorized domains.",
     "auth/too-many-requests": "Too many attempts. Please wait a moment and try again.",
     "auth/network-request-failed": "Check your internet connection and try again.",
   };

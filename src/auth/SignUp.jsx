@@ -3,6 +3,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import AuthLayout from "./AuthLayout";
 import { getAuthErrorMessage, useAuth } from "./AuthContext";
+import GoogleIcon from "./GoogleIcon";
 
 function getPasswordStrength(password) {
   if (!password) return 0;
@@ -15,7 +16,7 @@ function getPasswordStrength(password) {
 }
 
 export default function SignUp() {
-  const { signUp, firebaseEnabled } = useAuth();
+  const { signUp, signInWithGoogle, firebaseEnabled, firebaseGoogleEnabled } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const [displayName, setDisplayName] = useState("");
@@ -51,100 +52,136 @@ export default function SignUp() {
     }
   }
 
+  async function googleSignIn() {
+    setError("");
+    setLoading(true);
+    try {
+      const user = await signInWithGoogle();
+      console.log("Signed in with Google:", user?.email);
+      navigate(destination, { replace: true });
+    } catch (authError) {
+      console.error("Google sign-in error:", authError);
+      const code = authError?.code;
+      const msg = getAuthErrorMessage(authError);
+      setError(code ? `${msg} (${code})` : msg);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <AuthLayout
       title="Make a little space."
       description="Create your account for a private place to reflect."
     >
-      <form className="auth-form" onSubmit={submit}>
-        <label className="auth-field">
-          Full name
-          <input
-            type="text"
-            autoComplete="name"
-            required
-            maxLength={100}
-            value={displayName}
-            onChange={(event) => setDisplayName(event.target.value)}
-            placeholder="Your name"
-          />
-        </label>
-        <label className="auth-field">
-          Email address
-          <input
-            type="email"
-            autoComplete="email"
-            required
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            placeholder="you@example.com"
-          />
-        </label>
-        <label className="auth-field">
-          Password
-          <span className="auth-password-wrap">
-            <input
-              type={showPassword ? "text" : "password"}
-              aria-label="Password"
-              autoComplete="new-password"
-              required
-              minLength={8}
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              placeholder="Create a password"
-            />
-            <button
-              type="button"
-              className="auth-password-toggle"
-              aria-label={showPassword ? "Hide password" : "Show password"}
-              onClick={() => setShowPassword((visible) => !visible)}
-            >
-              {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
-            </button>
-          </span>
-          <span className="password-strength" aria-live="polite">
-            <span className="strength-track">
-              {[1, 2, 3, 4].map((step) => (
-                <span className={strength >= step ? `strength-${strength}` : ""} key={step} />
-              ))}
-            </span>
-            <span>{!password ? "Use 8 or more characters" : ["","Needs work","Fair","Good","Strong"][strength]}</span>
-          </span>
-        </label>
-        <label className="auth-field">
-          Confirm password
-          <input
-            type="password"
-            aria-label="Confirm password"
-            autoComplete="new-password"
-            required
-            minLength={8}
-            value={confirmPassword}
-            onChange={(event) => setConfirmPassword(event.target.value)}
-            placeholder="Enter your password again"
-          />
-        </label>
-        <label className="auth-check auth-terms">
-          <input
-            type="checkbox"
-            checked={acceptedTerms}
-            onChange={(event) => setAcceptedTerms(event.target.checked)}
-          />
-          <span>I agree to the Terms and Privacy Policy.</span>
-        </label>
+      <div className="auth-form">
         {error && <div className="auth-error" role="alert">{error}</div>}
         {!firebaseEnabled && (
           <div className="auth-error" role="status">
             Add the Firebase web app settings from <code>.env.example</code> to enable account creation.
           </div>
         )}
-        <button className="auth-submit" disabled={!firebaseEnabled || loading}>
-          {loading ? "Creating your account…" : "Create account"}
-        </button>
+
+        {firebaseGoogleEnabled && (
+          <div className="auth-google-section">
+            <button
+              type="button"
+              className="auth-google"
+              disabled={!firebaseEnabled || loading}
+              onClick={googleSignIn}
+            >
+              <GoogleIcon size={18} />
+              <span>Sign up with Google</span>
+            </button>
+            <div className="auth-divider"><span>or continue with email</span></div>
+          </div>
+        )}
+
+        <form onSubmit={submit} className="auth-form" style={{ gap: "16px" }}>
+          <label className="auth-field">
+            Full name
+            <input
+              type="text"
+              autoComplete="name"
+              required
+              maxLength={100}
+              value={displayName}
+              onChange={(event) => setDisplayName(event.target.value)}
+              placeholder="Your name"
+            />
+          </label>
+          <label className="auth-field">
+            Email address
+            <input
+              type="email"
+              autoComplete="email"
+              required
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder="you@example.com"
+            />
+          </label>
+          <label className="auth-field">
+            <span>Password</span>
+            <span className="auth-password-wrap">
+              <input
+                type={showPassword ? "text" : "password"}
+                aria-label="Password"
+                autoComplete="new-password"
+                required
+                minLength={8}
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                placeholder="Create a password"
+              />
+              <button
+                type="button"
+                className="auth-password-toggle"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                onClick={() => setShowPassword((visible) => !visible)}
+              >
+                {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
+              </button>
+            </span>
+            <span className="password-strength" aria-live="polite">
+              <span className="strength-track">
+                {[1, 2, 3, 4].map((step) => (
+                  <span className={strength >= step ? `strength-${strength}` : ""} key={step} />
+                ))}
+              </span>
+              <span>{!password ? "Use 8 or more characters" : ["","Needs work","Fair","Good","Strong"][strength]}</span>
+            </span>
+          </label>
+          <label className="auth-field">
+            Confirm password
+            <input
+              type="password"
+              aria-label="Confirm password"
+              autoComplete="new-password"
+              required
+              minLength={8}
+              value={confirmPassword}
+              onChange={(event) => setConfirmPassword(event.target.value)}
+              placeholder="Enter your password again"
+            />
+          </label>
+          <label className="auth-check auth-terms">
+            <input
+              type="checkbox"
+              checked={acceptedTerms}
+              onChange={(event) => setAcceptedTerms(event.target.checked)}
+            />
+            <span>I agree to the Terms and Privacy Policy.</span>
+          </label>
+          <button className="auth-submit" disabled={!firebaseEnabled || loading}>
+            {loading ? "Creating your account…" : "Create account"}
+          </button>
+        </form>
+
         <p className="auth-switch-copy">
-          Already have an account? <Link to="/sign-in" state={location.state}>Sign in</Link>
+          Already have an account? <Link to="/sign-up" state={location.state}>Sign in</Link>
         </p>
-      </form>
+      </div>
     </AuthLayout>
   );
 }
